@@ -1,0 +1,139 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="https://github.com/origin1tech/gulp-html-minifier">gulp-html-minifier (v0.1.8)</a>
+</h1>
+<h4>Minify HTML with html-minifier.</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.gulp-html-minifier">module gulp-html-minifier</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-html-minifier.gulp-html-minifier">
+            function <span class="apidocSignatureSpan"></span>gulp-html-minifier
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.gulp-html-minifier" id="apidoc.module.gulp-html-minifier">module gulp-html-minifier</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-html-minifier.gulp-html-minifier" id="apidoc.element.gulp-html-minifier.gulp-html-minifier">
+        function <span class="apidocSignatureSpan"></span>gulp-html-minifier
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">gulp-html-minifier = function (options) {
+	options = options || {
+		showStack: false,
+	};	
+
+	if (options.lint) {
+		options.lint = new HTMLLint();
+	}
+	// snipets stripPath, toArray &amp; unixify based on gulp-inject
+	// https://github.com/klei/gulp-inject/blob/master/index.js
+	function ignorePath (basedir, filepath) {
+		return toArray(basedir).reduce(function (path, remove) {
+			var regex = remove;
+			if(!(remove instanceof RegExp)){
+				remove = remove.replace(/\//g, '\\/');
+				regex = new RegExp(remove, 'g');
+			}
+			path = path.replace(regex, '');
+			return path;
+		}, filepath);
+	}
+	function toArray (arr) {
+		if (!Array.isArray(arr)) {
+			return arr ? [arr] : [];
+		}
+		return arr;
+	}
+	function unixify (filepath) {
+		return filepath.replace(/\\/g, '/');
+	}
+	return es.map(function (file, cb) {
+		try {
+			// if in dev mode html should not be minified
+			// instead only output stream after checking ignore path.
+			if(options.env === 'development'){
+				file.path = ignorePath(options.ignorePath, unixify(file.path));
+			} else {
+				file.path = ignorePath(options.ignorePath, unixify(file.path));
+				file.contents = new Buffer(htmlmin.minify(String(file.contents), options));
+			}
+		} catch (err) {
+			return cb(new gutil.PluginError('gulp-htmlmin', err, options));
+		}
+		cb(null, file);
+	});
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
